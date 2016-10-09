@@ -2,6 +2,12 @@
 
 A simple app that runs in your system's tray to enable you to search for the best NPM modules.
 
+# Usage
+
+After installing the app, type any query to get a list of npm modules associated with your query, organized by rating.
+
+ProTip: You can press `CMD+SHIFT+/` or `CTRL+SHIFT+/` at any time to access the app, even when it's running in the background.
+
 # Installation
 
 ```sh

@@ -1,9 +1,9 @@
-const { app, Tray, BrowserWindow } = require('electron')
+const { app, Tray, BrowserWindow, globalShortcut, ipcMain } = require('electron')
   , path = require('path')
   , assetsDirectory = path.join(__dirname, 'assets')
 
 // For dev...
-require('electron-debug')({showDevTools: true});
+// require('electron-debug')({showDevTools: true});
 
 // Establish objects...
 let tray = window = undefined
@@ -15,6 +15,7 @@ app.dock.hide()
 app.on('ready', () => {
   createTray()
   createWindow()
+  registerGlobalShortcuts()
 })
 
 // Quit the app when the window is closed
@@ -89,10 +90,25 @@ const toggleWindow = () => {
 }
 
 // Show it
-const showWindow = () => {
+const showWindow = (isSeachBoxFocused) => {
   const position = getWindowPosition()
   window.setPosition(position.x, position.y, false)
   window.show()
   window.focus()
+  if(isSeachBoxFocused) focusSearchBox()
 }
 
+const focusSearchBox = () => {
+  window.webContents.send('focus-search-box')
+}
+
+const registerGlobalShortcuts = () => {
+  
+  const ret = globalShortcut.register('CommandOrControl+Shift+/', () => {
+    showWindow(true)
+  })
+
+  if (!ret) {
+    console.error('CommandOrControl+Shift+/ keyboard registration failed.')
+  }
+}

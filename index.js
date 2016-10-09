@@ -5,7 +5,11 @@ var request = require('request')
   , ejs = require('ejs')
   , shell = require('electron').shell
   , path = require('path')
+  , ipcRenderer = require('electron').ipcRenderer
   ;
+
+// Attach listeners
+ipcRenderer.on('focus-search-box', focusSearchBoxListener)
 
 // Send query to npm and fire cb
 function querynpm(query, cb){
@@ -106,3 +110,8 @@ function renderResults(data){
   })
 
 }
+
+// Apply focus to search box
+function focusSearchBoxListener(){ $('#query').val('').focus() }
+
+
