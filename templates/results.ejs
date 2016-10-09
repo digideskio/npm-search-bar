@@ -1,0 +1,15 @@
+  <thead>
+    <tr>
+      <th>Module Name</th>
+      <th>Rating</th>
+      <!-- <th>Certified</th> -->
+    </tr>
+  </thead>
+  <tbody>
+  <% for(var i=0; i<results.length; i++) { %>
+    <tr>
+      <td><a href='http://npmsearch.com/?q=<%= results[i].name %>'><%= results[i].name %></a></td>
+      <td><%= results[i].rating[0] %>/10</td>
+    </tr>
+  <% } %>
+  </tbody>

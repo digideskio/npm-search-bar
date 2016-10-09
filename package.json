@@ -1,0 +1,30 @@
+{
+  "name": "npm-search-bar",
+  "productName": "npm-search-bar",
+  "version": "0.0.1",
+  "main": "main.js",
+  "license": "MIT",
+  "author": "Joe McCann",
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-packager ./ --platform=darwin --arch=x64 --out=out --icon=./ns-icons.icns --overwrite"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joemccann/npm-search-bar"
+  },
+  "bugs": {
+    "url": "https://github.com/joemccann/npm-search-bar/issues"
+  },
+  "devDependencies": {
+    "devtron": "^1.4.0",
+    "electron-packager": "^7.3.0",
+    "electron-prebuilt": "^1.2.7"
+  },
+  "dependencies": {
+    "ejs": "^2.5.2",
+    "electron-debug": "^1.0.1",
+    "jquery": "^3.1.1",
+    "request": "^2.75.0"
+  }
+}
