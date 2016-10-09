@@ -1,4 +1,4 @@
-// https://github.com/kevinsawicki/tray-example
+// https://github.com/kevinsawicki/tray-example for ideas...
 
 var request = require('request')
   , $ = require('jquery')
