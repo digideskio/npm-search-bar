@@ -4,7 +4,6 @@ var request = require('request')
   , $ = require('jquery')
   , ejs = require('ejs')
   , shell = require('electron').shell
-  , _ = require('lodash')
   , path = require('path')
   ;
 

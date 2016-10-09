@@ -3,7 +3,7 @@ const { app, Tray, BrowserWindow } = require('electron')
   , assetsDirectory = path.join(__dirname, 'assets')
 
 // For dev...
-// require('electron-debug')({showDevTools: true});
+require('electron-debug')({showDevTools: true});
 
 // Establish objects...
 let tray = window = undefined
