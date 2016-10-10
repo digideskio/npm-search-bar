@@ -1,3 +1,4 @@
+// Main renderer code
 // https://github.com/kevinsawicki/tray-example for ideas...
 
 var request = require('request')
@@ -61,7 +62,6 @@ $(function(){
         else {
           var parsedData = JSON.parse(data)
           $('#results').children().remove()
-          // $('#results').append(renderResults(parsedData))
           renderResults(parsedData)
         }
       }) // end querynpm

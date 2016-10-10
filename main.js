@@ -1,3 +1,5 @@
+// Main application code
+
 const { app, Tray, BrowserWindow, globalShortcut, ipcMain } = require('electron')
   , path = require('path')
   , assetsDirectory = path.join(__dirname, 'assets')
@@ -98,9 +100,8 @@ const showWindow = (isSeachBoxFocused) => {
   if(isSeachBoxFocused) focusSearchBox()
 }
 
-const focusSearchBox = () => {
-  window.webContents.send('focus-search-box')
-}
+// Send message to browser to focus inside the search box
+const focusSearchBox = () => { window.webContents.send('focus-search-box') }
 
 const registerGlobalShortcuts = () => {
   
