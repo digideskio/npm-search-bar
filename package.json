@@ -1,7 +1,7 @@
 {
   "name": "npm-search-bar",
   "productName": "NPM Search",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "main.js",
   "license": "MIT",
   "author": "Joe McCann",
