@@ -33,6 +33,12 @@ Then, run
 
 Currently this builds for Mac but can build for others easily.
 
+To package for every available platform, run
+
+`npm run packagea-all`
+
+Then check the `out` directory.
+
 # License
 
 MIT

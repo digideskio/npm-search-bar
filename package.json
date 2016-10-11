@@ -1,13 +1,14 @@
 {
   "name": "npm-search-bar",
-  "productName": "npm-search-bar",
+  "productName": "NPM Search",
   "version": "0.0.2",
   "main": "main.js",
   "license": "MIT",
   "author": "Joe McCann",
   "scripts": {
     "start": "electron .",
-    "package": "electron-packager ./ --platform=darwin --arch=x64 --out=out --icon=./ns-icons.icns --overwrite"
+    "package": "electron-packager ./ --platform=darwin --arch=x64 --out=out --icon=./ns-icons.icns --overwrite",
+    "package-all": "electron-packager ./ --all --out=out --icon=./ns-icons.icns --overwrite"
   },
   "repository": {
     "type": "git",
