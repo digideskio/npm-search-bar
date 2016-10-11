@@ -7,6 +7,8 @@ var request = require('request')
   , shell = require('electron').shell
   , path = require('path')
   , ipcRenderer = require('electron').ipcRenderer
+  , remote = require('electron').remote
+  , contextMenu
   ;
 
 // Attach listeners
@@ -44,8 +46,33 @@ function querynpm(query, cb){
 
 }
 
+function ipcSendKill(){
+  ipcRenderer.send('quit-app', true)
+}
+
+function ipcSendRunAtStartup(){
+  // check the checkbox for its value
+  console.log(contextMenu.items[0].checked + " is checked after click")
+  var isChecked = ( contextMenu.items[0].checked ? true : false) 
+  ipcRenderer.send('run-at-startup', isChecked)
+}
+
 // Let's go...
 $(function(){
+
+  var Menu = remote.Menu
+
+  // show context menu
+  contextMenu = Menu.buildFromTemplate([
+    {label: 'Run at Startup', type: 'checkbox', checked: false, click: ipcSendRunAtStartup},
+    {type: 'separator'},
+    {label: 'Quit', type: 'normal', click: ipcSendKill },
+    ])
+
+  $('#settings').on('click', function(e){
+    contextMenu.popup(remote.getCurrentWindow())
+    e.preventDefault()
+  })
 
   $('#reset').on('click', function(e){
     clearResults()

@@ -10,18 +10,22 @@ const { app, Tray, BrowserWindow, globalShortcut, ipcMain, Menu } = require('ele
 // require('electron-debug')({showDevTools: true});
 
 // Establish objects...
-let tray = window = appAutoLauncher = undefined 
+let tray = window = contextMenu = appAutoLauncher = undefined 
 
 // Don't show the app in the doc, since it's a tray app
 app.dock.hide()
 
 // Bootstrap...
 app.on('ready', () => {
+  
   createTray()
   createWindow()
+
   registerGlobalShortcuts()
   registerAutoLauncher()
+  
   initializeUserPreferences()
+
 })
 
 // Quit the app when the window is closed
@@ -35,6 +39,9 @@ const createTray = () => {
   tray = new Tray(path.join(assetsDirectory, 'ns-icon.png'))
   
   tray.on('double-click', toggleWindow)
+
+  tray.on('right-click', toggleWindow)
+
   tray.on('click', function (event) {
     toggleWindow()
 
@@ -43,8 +50,6 @@ const createTray = () => {
       window.openDevTools({mode: 'detach'})
     }
   })
-
-  tray.on('right-click', toggleContextMenu)
 
 }
 
@@ -90,48 +95,32 @@ const createWindow = () => {
   })
 }
 
-// Toggle the context menu
-const toggleContextMenu = () => {
-
-  const contextMenu = Menu.buildFromTemplate([
-    {label: 'Run at Startup', type: 'radio', click: toggleRunAtStartup},
-    {type: 'separator'},
-    {label: 'Quit', type: 'normal', click: quitAppContextMenuListener }
-  ])
-  tray.setContextMenu(contextMenu)
-  tray.popUpContextMenu([contextMenu])
-
-}
-
-// Quit app if they Quit label is pressed.
-const quitAppContextMenuListener = (menuItem, browserWindow, event) => {
-  if( menuItem.label === 'Quit') app.quit()
-}
-
 // Setting to enable npm search bar to run at startup
-const toggleRunAtStartup = (menuItem, browserWindow, event) => {
-  if( menuItem.label === 'Run at Startup') {
+const toggleRunAtStartup = (isRunAtStartupEnabled) => {
 
     storage.get('userPreferences', function(object) {
 
-        if (object.isAutoLaunchEnabled) {
-          // Then disable it
-          object.isAutoLaunchEnabled = false
-          appAutoLauncher.disable()
-          storage.set('userPreferences', object, (err) => {
+      object = object || {}
+
+      if (object.isAutoLaunchEnabled) {
+        // Then disable it
+        object.isAutoLaunchEnabled = false
+        appAutoLauncher.disable()
+        storage.set('userPreferences', object, (err) => {
+          if(err) console.error(err)
+          console.log('set userPreferences')
+        }) // end set userPrefs
+      } // end if
+      else {
+        // Then enable it
+        object.isAutoLaunchEnabled = true
+        appAutoLauncher.enable()
+        storage.set('userPreferences', object, (err) => {
             if(err) console.error(err)
-          }) // end set userPrefs
-        } // end if
-        else {
-          // Then enable it
-          object.isAutoLaunchEnabled = true
-          appAutoLauncher.enable()
-          storage.set('userPreferences', object, (err) => {
-              if(err) console.error(err)
-            }) // end set userPreferences
-        } // end else
-      }) // end get userPreferences
-  } // end if
+            console.log('updated userPreferences')
+          }) // end set userPreferences
+      } // end else
+    }) // end get userPreferences
 
 } // end toggleRunAtStartup()
 
@@ -191,3 +180,11 @@ const initializeUserPreferences = () => {
     }
   })  // end storage.has
 }
+
+ipcMain.on('quit-app', (event, arg) => {
+  app.quit()
+})
+
+ipcMain.on('run-at-startup', (event, arg) => {
+  toggleRunAtStartup(arg)
+})
