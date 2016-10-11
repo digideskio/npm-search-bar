@@ -8,7 +8,9 @@
   "scripts": {
     "start": "electron .",
     "package": "electron-packager ./ --platform=darwin --arch=x64 --out=out --icon=./ns-icons.icns --overwrite",
+    "prepackage-all": "electron-packager ./ --all --out=out --icon=./ns-icons.icns --overwrite"
     "package-all": "electron-packager ./ --all --out=out --icon=./ns-icons.icns --overwrite"
+    "postpackage-all": "bin/zip"
   },
   "repository": {
     "type": "git",
