@@ -5,9 +5,10 @@ const { app, Tray, BrowserWindow, globalShortcut, ipcMain, Menu } = require('ele
   , AutoLaunch = require('auto-launch')
   , storage = require('electron-json-storage')
   , assetsDirectory = path.join(__dirname, 'assets')
-
+  ;
+ 
 // For dev...
-// require('electron-debug')({showDevTools: true});
+require('electron-debug')({showDevTools: true});
 
 // Establish objects...
 let tray = window = contextMenu = appAutoLauncher = undefined 
@@ -24,7 +25,10 @@ app.on('ready', () => {
   registerGlobalShortcuts()
   registerAutoLauncher()
   
-  initializeUserPreferences()
+  // Important to do this after...
+  window.webContents.on('did-finish-load', () => {
+    initializeUserPreferences()
+  })
 
 })
 
@@ -98,28 +102,27 @@ const createWindow = () => {
 // Setting to enable npm search bar to run at startup
 const toggleRunAtStartup = (isRunAtStartupEnabled) => {
 
-    storage.get('userPreferences', function(object) {
+    storage.get('userPreferences', function(err, object) {
 
       object = object || {}
 
-      if (object.isAutoLaunchEnabled) {
-        // Then disable it
-        object.isAutoLaunchEnabled = false
-        appAutoLauncher.disable()
-        storage.set('userPreferences', object, (err) => {
-          if(err) console.error(err)
-          console.log('set userPreferences')
-        }) // end set userPrefs
-      } // end if
-      else {
-        // Then enable it
-        object.isAutoLaunchEnabled = true
+      if(isRunAtStartupEnabled){
+        // enable it
         appAutoLauncher.enable()
-        storage.set('userPreferences', object, (err) => {
-            if(err) console.error(err)
-            console.log('updated userPreferences')
-          }) // end set userPreferences
-      } // end else
+        object.isAutoLaunchEnabled = true
+      }
+      else{
+        // disable it
+        appAutoLauncher.disable()
+        object.isAutoLaunchEnabled = false
+      }
+
+      // Write preferences
+      storage.set('userPreferences', object, (err) => {
+        if(err) console.error(err)
+        console.log('updated userPreferences...')
+      }) // end set userPreferences
+
     }) // end get userPreferences
 
 } // end toggleRunAtStartup()
@@ -178,6 +181,12 @@ const initializeUserPreferences = () => {
         console.log('Initialized userPreferences in storage.')
       }) // end set
     }
+    else {
+      storage.get('userPreferences', function(err,object) {
+        if(err) return console.error(err)
+        else window.webContents.send('set-preferences', object )
+      })
+    } // end else
   })  // end storage.has
 }
 
