@@ -8,7 +8,7 @@ const { app, Tray, BrowserWindow, globalShortcut, ipcMain, Menu } = require('ele
   ;
  
 // For dev...
-require('electron-debug')({showDevTools: true});
+// require('electron-debug')({showDevTools: true});
 
 // Establish objects...
 let tray = window = contextMenu = appAutoLauncher = undefined 
