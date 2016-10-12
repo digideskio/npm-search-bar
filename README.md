@@ -35,7 +35,7 @@ Currently this builds for Mac but can build for others easily.
 
 To package for every available platform, run
 
-`npm run packagea-all`
+`npm run package-all`
 
 Then check the `out` directory.
 
